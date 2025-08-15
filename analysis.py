@@ -6,31 +6,39 @@
 import marimo as mo
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
-# --- Cell 1: Dataset creation ---
-# Generate synthetic data (x, y with noise)
+# --- Cell 1: Generate dataset ---
+# Create synthetic linear dataset with noise
+# Output: DataFrame 'data' with columns X, Y
 x = np.linspace(0, 10, 100)
 y = 2 * x + np.random.normal(0, 2, 100)
 data = pd.DataFrame({"X": x, "Y": y})
 
 # --- Cell 2: Interactive slider ---
-# This slider controls the size of the sample
+# Slider widget to select number of points to sample from 'data'
+# Output: UI element 'slider'
 slider = mo.ui.slider(10, 100, value=50)
 
-# --- Cell 3: Variable dependency on slider ---
-# Sample depends on slider value
+# --- Cell 3: Sample dataset based on slider ---
+# 'slider.value' determines how many rows to sample from 'data'
+# Input: data (Cell 1), slider (Cell 2)
+# Output: DataFrame 'sample'
 sample = data.sample(slider.value, random_state=42)
 
-# --- Cell 4: Dynamic Markdown output ---
+# --- Cell 4: Dynamic Markdown explanation ---
+# This Markdown updates when 'slider.value' changes
+# Input: slider (Cell 2)
 mo.md(f"""
 ### Interactive Relationship Demo  
 Currently sampling **{slider.value}** points from the dataset.
 
-🟢 Each increase in slider updates this plot in real time.
+🟢 Each increase in slider updates this plot and text in real time.
 """)
 
-# --- Cell 5: Visualization depending on slider ---
-import matplotlib.pyplot as plt
+# --- Cell 5: Visualization ---
+# Scatter plot of sampled data
+# Input: sample (Cell 3)
 fig, ax = plt.subplots()
 ax.scatter(sample["X"], sample["Y"], alpha=0.7, label="Sampled data")
 ax.set_xlabel("X")
