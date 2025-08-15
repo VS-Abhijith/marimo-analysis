@@ -8,37 +8,39 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-# --- Cell 1: Generate dataset ---
-# Create synthetic linear dataset with noise
-# Output: DataFrame 'data' with columns X, Y
+# --- Cell 1: Create dataset ---
+# We generate a synthetic dataset of X and Y values.
+# The variable 'data' created here will be reused in later cells.
 x = np.linspace(0, 10, 100)
 y = 2 * x + np.random.normal(0, 2, 100)
 data = pd.DataFrame({"X": x, "Y": y})
 
-# --- Cell 2: Interactive slider ---
-# Slider widget to select number of points to sample from 'data'
-# Output: UI element 'slider'
+# --- Cell 2: Define slider widget ---
+# This slider allows us to choose how many points to sample from 'data'.
+# The variable 'slider.value' will flow into Cell 3 and Cell 4.
 slider = mo.ui.slider(10, 100, value=50)
 
 # --- Cell 3: Sample dataset based on slider ---
-# 'slider.value' determines how many rows to sample from 'data'
-# Input: data (Cell 1), slider (Cell 2)
-# Output: DataFrame 'sample'
+# This cell depends on:
+#   - 'data' from Cell 1
+#   - 'slider.value' from Cell 2
+# It produces 'sample', which will be used in Cell 5 to plot the data.
 sample = data.sample(slider.value, random_state=42)
 
-# --- Cell 4: Dynamic Markdown explanation ---
-# This Markdown updates when 'slider.value' changes
-# Input: slider (Cell 2)
+# --- Cell 4: Dynamic Markdown ---
+# This Markdown cell depends directly on 'slider.value' from Cell 2.
+# When the slider changes, this text automatically updates.
 mo.md(f"""
 ### Interactive Relationship Demo  
 Currently sampling **{slider.value}** points from the dataset.
 
-🟢 Each increase in slider updates this plot and text in real time.
+🟢 Each change in the slider updates this text and the plot below.
 """)
 
 # --- Cell 5: Visualization ---
-# Scatter plot of sampled data
-# Input: sample (Cell 3)
+# This visualization depends on:
+#   - 'sample' from Cell 3
+# It shows how the sampled points (X, Y) are distributed.
 fig, ax = plt.subplots()
 ax.scatter(sample["X"], sample["Y"], alpha=0.7, label="Sampled data")
 ax.set_xlabel("X")
